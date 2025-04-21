@@ -1,10 +1,26 @@
 import { EmptyState } from "@/components/general/EmptyState";
 import React from "react";
-
 import { JobCard } from "@/components/general/JobCard";
-
 import { prisma } from "@/app/utils/db";
 import { requireUser } from "@/app/utils/hooks";
+
+type SavedJob = {
+  job: {
+    id: string;
+    jobTitle: string;
+    salaryFrom: number;
+    salaryTo: number;
+    employmentType: string;
+    location: string;
+    createdAt: Date;
+    company: {
+      name: string;
+      logo: string | null;
+      location: string;
+      about: string;
+    };
+  };
+};
 
 async function getFavorites(userId: string) {
   const data = await prisma.savedJobPost.findMany({
@@ -53,8 +69,8 @@ const FavoritesPage = async () => {
   }
 
   return (
-    <div className="grid grid-cols-1 mt-5   gap-4">
-      {favorites.map((favorite) => (
+    <div className="grid grid-cols-1 mt-5 gap-4">
+      {favorites.map((favorite: SavedJob) => (
         <JobCard job={favorite.job} key={favorite.job.id} />
       ))}
     </div>
