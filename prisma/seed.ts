@@ -226,8 +226,9 @@ async function main() {
         status === JobPostStatus.ACTIVE ? Math.floor(Math.random() * 20) : 0;
 
       // Random salary range with minimum $50k difference
-      const salaryFrom = Math.floor(Math.random() * 70000) + 50000; // $50k-$120k
-      const salaryTo = salaryFrom + Math.floor(Math.random() * 50000) + 50000; // $100k-$170k
+      const salaryFrom = Math.floor(Math.random() * 70000) + 50000;
+
+      const salaryTo = salaryFrom + Math.floor(Math.random() * 50000) + 50000;
 
       // Random job titles based on company focus
       let jobTitles;
