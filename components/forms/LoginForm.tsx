@@ -56,7 +56,21 @@ const Google = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+
 export function LoginForm() {
+  const [loadingProvider, setLoadingProvider] = useState<"github" | "google" | null>(null);
+
+  const handleLogin = async (provider: "github" | "google") => {
+    setLoadingProvider(provider);
+    try {
+      await signIn(provider, { callbackUrl: "/onboarding" });
+    } finally {
+      setLoadingProvider(null);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <Card>
@@ -73,19 +87,39 @@ export function LoginForm() {
                 type="button"
                 variant="outline"
                 className="w-full"
-                onClick={() => signIn("github", { callbackUrl: "/onboarding" })}
+                disabled={loadingProvider !== null}
+                onClick={() => handleLogin("github")}
               >
-                <Github />
-                <span>Login with GitHub</span>
+                {loadingProvider === "github" ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    <span>Logging in...</span>
+                  </>
+                ) : (
+                  <>
+                    <Github />
+                    <span>Login with GitHub</span>
+                  </>
+                )}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 className="w-full"
-                onClick={() => signIn("google", { callbackUrl: "/onboarding" })}
+                disabled={loadingProvider !== null}
+                onClick={() => handleLogin("google")}
               >
-                <Google />
-                <span>Login with Google</span>
+                {loadingProvider === "google" ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    <span>Logging in...</span>
+                  </>
+                ) : (
+                  <>
+                    <Google />
+                    <span>Login with Google</span>
+                  </>
+                )}
               </Button>
             </div>
           </div>
