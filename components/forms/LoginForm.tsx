@@ -1,4 +1,6 @@
-import { signIn } from "@/app/utils/auth";
+"use client";
+
+import { signIn } from "next-auth/react";
 import {
   Card,
   CardContent,
@@ -9,7 +11,7 @@ import {
 
 import * as React from "react";
 import type { SVGProps } from "react";
-import { GeneralSubmitButton } from "../general/SubmitButtons";
+import { Button } from "../ui/button";
 
 const Github = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -67,36 +69,24 @@ export function LoginForm() {
         <CardContent>
           <div className="grid gap-6">
             <div className="flex flex-col gap-4">
-              <form
-                action={async () => {
-                  "use server";
-                  await signIn("github", {
-                    redirectTo: "/onboarding",
-                  });
-                }}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => signIn("github", { callbackUrl: "/onboarding" })}
               >
-                <GeneralSubmitButton
-                  text="Login with GitHub"
-                  icon={<Github />}
-                  variant="outline"
-                  width="w-full"
-                />
-              </form>
-              <form
-                action={async () => {
-                  "use server";
-                  await signIn("google", {
-                    redirectTo: "/onboarding",
-                  });
-                }}
+                <Github />
+                <span>Login with GitHub</span>
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => signIn("google", { callbackUrl: "/onboarding" })}
               >
-                <GeneralSubmitButton
-                  text="Login with Google"
-                  icon={<Google />}
-                  variant="outline"
-                  width="w-full"
-                />
-              </form>
+                <Google />
+                <span>Login with Google</span>
+              </Button>
             </div>
           </div>
         </CardContent>
